@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hans Smart Local Notes — Download</title>
+<meta name="description" content="Hans Smart Local Notes is a local-first notes app for Android and Windows. Download the APK or the Windows build." />
+<style>
+  :root {
+    --paper: #f5efe3;
+    --surface: #fffcf6;
+    --ink: #1e2320;
+    --muted: #5d6660;
+    --green: #2f5d50;
+    --green-deep: #1c3830;
+    --clay: #b4693b;
+    --line: #e3daca;
+    --shadow: 0 18px 50px rgba(30, 35, 32, .10);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+  header {
+    position: sticky; top: 0; z-index: 20;
+    backdrop-filter: blur(14px);
+    background: rgba(245, 239, 227, .82);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { display: flex; align-items: center; gap: 14px; padding: 14px 0; }
+  .mark {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(145deg, #3c7161, #1a352d);
+    color: #faf7f0; display: grid; place-items: center;
+    font-weight: 800; font-size: 21px; letter-spacing: -.5px;
+    box-shadow: 0 8px 18px rgba(47, 93, 80, .28);
+  }
+  .brand { font-weight: 700; letter-spacing: -.3px; font-size: 15.5px; }
+  .brand small { display: block; font-weight: 500; color: var(--muted); font-size: 11.5px; letter-spacing: .2px; }
+  .nav .spacer { flex: 1; }
+  .nav a.link {
+    text-decoration: none; font-size: 13.5px; color: var(--muted);
+    padding: 8px 12px; border-radius: 999px;
+  }
+  .nav a.link:hover { background: rgba(47, 93, 80, .08); color: var(--green); }
+
+  .hero { padding: 64px 0 24px; display: grid; gap: 40px; grid-template-columns: 1.15fr .85fr; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: .4px;
+    color: var(--green); background: rgba(47, 93, 80, .09);
+    border: 1px solid rgba(47, 93, 80, .18);
+    padding: 7px 13px; border-radius: 999px; text-transform: uppercase;
+  }
+  h1 {
+    font-size: clamp(34px, 4.4vw, 54px);
+    line-height: 1.04; letter-spacing: -1.6px; margin: 20px 0 16px;
+  }
+  h1 span { color: var(--green); }
+  .lede { font-size: 16.5px; line-height: 1.65; color: var(--muted); max-width: 560px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 20px; border-radius: 14px; font-weight: 600; font-size: 14.5px;
+    text-decoration: none; border: 1px solid transparent; transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.primary { background: var(--green); color: #f7f3ea; box-shadow: 0 12px 26px rgba(47, 93, 80, .26); }
+  .btn.ghost { background: var(--surface); color: var(--ink); border-color: var(--line); box-shadow: 0 6px 16px rgba(30,35,32,.05); }
+  .btn .meta { font-weight: 500; opacity: .72; font-size: 12.5px; }
+  .hint { margin-top: 14px; font-size: 12.5px; color: var(--muted); }
+  .hint code { background: rgba(47,93,80,.08); padding: 2px 6px; border-radius: 6px; font-size: 12px; }
+
+  .phone-card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 26px; padding: 18px; box-shadow: var(--shadow);
+  }
+  .phone-top { display: flex; align-items: center; gap: 10px; padding: 4px 6px 14px; }
+  .phone-top .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--clay); }
+  .phone-top .t { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .mini-search {
+    display: flex; align-items: center; gap: 8px;
+    border: 1px solid var(--line); border-radius: 12px;
+    padding: 10px 12px; font-size: 12.5px; color: var(--muted); background: #fffdf9;
+  }
+  .mini-note {
+    border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-top: 10px;
+    background: #fffdf9;
+  }
+  .mini-note.pinned { background: rgba(47,93,80,.06); border-color: rgba(47,93,80,.16); }
+  .mini-note b { display: block; font-size: 13.5px; letter-spacing: -.2px; }
+  .mini-note p { margin: 5px 0 0; font-size: 11.8px; color: var(--muted); line-height: 1.45; }
+  .mini-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 16px 4px 6px; font-weight: 700; }
+
+  section { padding: 56px 0; }
+  .section-head { max-width: 620px; margin-bottom: 28px; }
+  .section-head h2 { font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -.8px; margin: 0 0 10px; }
+  .section-head p { margin: 0; color: var(--muted); line-height: 1.65; font-size: 15px; }
+
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
+  .feature {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 18px; padding: 20px;
+  }
+  .feature .ico {
+    width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center;
+    background: rgba(47,93,80,.1); color: var(--green); font-size: 17px; margin-bottom: 12px;
+  }
+  .feature h3 { margin: 0 0 6px; font-size: 15px; letter-spacing: -.2px; }
+  .feature p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .stack {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px;
+  }
+  .stack h3 { margin: 0 0 12px; font-size: 15.5px; }
+  .stack ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .stack li { display: flex; gap: 10px; font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+  .stack li b { color: var(--ink); font-weight: 600; }
+  .stack .pill {
+    flex: none; font-size: 10.5px; font-weight: 700; letter-spacing: .4px;
+    background: rgba(47,93,80,.09); color: var(--green);
+    padding: 3px 8px; border-radius: 999px; height: fit-content; margin-top: 1px;
+  }
+
+  .qr-box {
+    display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: center;
+    background: linear-gradient(150deg, #24463c, #16302a);
+    color: #f3efe6; border-radius: 24px; padding: 30px; box-shadow: var(--shadow);
+  }
+  .qr-box img { width: 200px; height: 200px; border-radius: 14px; background: #fff; padding: 8px; display: block; }
+  .qr-box h2 { margin: 0 0 8px; font-size: 24px; letter-spacing: -.6px; }
+  .qr-box p { margin: 0; font-size: 14px; line-height: 1.65; color: rgba(243, 239, 230, .74); }
+  .qr-box a { color: #cfe6dc; font-weight: 600; }
+  .qr-meta { margin-top: 14px; font-size: 12px; color: rgba(243,239,230,.55); word-break: break-all; }
+
+  ol.steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 13.8px; line-height: 1.85; }
+  ol.steps b { color: var(--ink); }
+
+  footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--muted); font-size: 12.5px; }
+  footer .row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 40px; }
+    .grid { grid-template-columns: 1fr 1fr; }
+    .split { grid-template-columns: 1fr; }
+    .nav a.link { display: none; }
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .qr-box { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+    .qr-box p { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="mark">H</div>
+    <div class="brand">Hans Smart Local Notes<small>Local-first notes · Android &amp; Windows</small></div>
+    <div class="spacer"></div>
+    <a class="link" href="#features">Features</a>
+    <a class="link" href="#stack">Storage</a>
+    <a class="link" href="#download">Download</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <span class="badge">● Offline by design</span>
+      <h1>Your notes stay<br /><span>on your device.</span></h1>
+      <p class="lede">
+        Hans Smart Local Notes is a Flutter note taking app for Android and Windows.
+        Write, pin and search notes offline — everything is stored in a local SQLite
+        database, your theme choice is remembered with shared_preferences, and your
+        notes can be exported to a JSON file at any time.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="hans-smart-local-notes-arm64.apk" download>
+          ⬇ Download APK <span class="meta">17.4 MB · arm64</span>
+        </a>
+        <a class="btn ghost" href="HansSmartLocalNotes-Windows.zip" download>
+          ⬇ Windows build <span class="meta">11.8 MB · x64</span>
+        </a>
+      </div>
+      <p class="hint">Android 7.0+ · Windows 10/11 (x64) · No account, no tracking, no internet permission.</p>
+      <p class="hint">Older 32-bit Android device? Use <a href="hans-smart-local-notes-armv7.apk" download>the armeabi-v7a APK (14.9 MB)</a>.</p>
+    </div>
+
+    <div class="phone-card" aria-hidden="true">
+      <div class="phone-top">
+        <div class="mark" style="width:30px;height:30px;border-radius:9px;font-size:16px;">H</div>
+        <div class="t">Hans Smart Local Notes</div>
+      </div>
+      <div class="mini-search">🔍 Search by title or content…</div>
+      <div class="mini-label">Pinned Notes</div>
+      <div class="mini-note pinned">
+        <b>Minggu ini</b>
+        <p>Belajar Flutter: shared_preferences untuk tema, sqflite untuk catatan.</p>
+      </div>
+      <div class="mini-label">Recent Notes</div>
+      <div class="mini-note">
+        <b>Ide aplikasi</b>
+        <p>Catatan lokal yang bisa dipakai tanpa koneksi internet.</p>
+      </div>
+      <div class="mini-label">All Notes</div>
+      <div class="mini-note">
+        <b>Daftar belanja</b>
+        <p>Susu, roti, kopi — urut berdasarkan yang terakhir diubah.</p>
+      </div>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Everything from the mind map, in one app</h2>
+        <p>Home, add note, note detail, search, settings and the data layer are implemented exactly as planned.</p>
+      </div>
+      <div class="grid">
+        <div class="feature">
+          <div class="ico">🏠</div>
+          <h3>Home page</h3>
+          <p>Header and logo, search bar, pinned notes, recent notes, all notes and a floating add button.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">📝</div>
+          <h3>Add &amp; edit notes</h3>
+          <p>Title, content, pin toggle, save and cancel — with validation so a note cannot be saved without a title.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">📌</div>
+          <h3>Note detail</h3>
+          <p>View title and content, edit, delete with confirmation, and pin or unpin straight from the page.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">🔎</div>
+          <h3>Search</h3>
+          <p>Keyword search over title, content, or both. Parameterised SQL, friendly empty results, one-tap clear.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">🌗</div>
+          <h3>Theme memory</h3>
+          <p>Light, dark or follow the system. The choice is persisted and restored before the first frame.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">💾</div>
+          <h3>Export JSON</h3>
+          <p>Write every note to a timestamped JSON snapshot in the app documents folder, then copy the path.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack" style="padding-top: 0;">
+    <div class="wrap split">
+      <div class="stack">
+        <h3>Data storage</h3>
+        <ul>
+          <li><span class="pill">SQLite</span><span><b>notes</b> table with id, title, body, pinned, createdAt and updatedAt — CRUD, pinning and search run in the database.</span></li>
+          <li><span class="pill">Prefs</span><span><b>theme_mode</b> in shared_preferences, read once at startup with a safe default.</span></li>
+          <li><span class="pill">File</span><span><b>hans_notes_&lt;timestamp&gt;.json</b> snapshot written to the application documents directory.</span></li>
+        </ul>
+      </div>
+      <div class="stack">
+        <h3>Why this mix</h3>
+        <ul>
+          <li><span class="pill">01</span><span>Notes are <b>many records</b>, not one blob — so a row per note in SQLite.</span></li>
+          <li><span class="pill">02</span><span>Search and pinned-first ordering need <b>conditional queries</b> — <code>WHERE … LIKE ?</code>, <code>ORDER BY</code>.</span></li>
+          <li><span class="pill">03</span><span>The theme is a <b>single small value</b> that must survive a restart — exactly what shared_preferences is for.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="download" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="qr-box">
+        <img src="qr-download.png" alt="QR code to download Hans Smart Local Notes" />
+        <div>
+          <h2>Scan to download</h2>
+          <p>
+            Point your Android camera at the QR code — the APK starts downloading immediately.
+            On Windows, open the link and grab the zip instead.
+          </p>
+          <p class="qr-meta">https://37knwclxos978kh8ciw.traesite.cn/hans-smart-local-notes-arm64.apk</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top: 0;">
+    <div class="wrap split">
+      <div class="stack">
+        <h3>Install on Android</h3>
+        <ol class="steps">
+          <li>Scan the QR code or tap <b>Download APK</b>.</li>
+          <li>Open the downloaded file from your notifications.</li>
+          <li>Allow installs from this source when Android asks.</li>
+          <li>Launch <b>Hans Smart Local Notes</b> — no sign-in required.</li>
+        </ol>
+      </div>
+      <div class="stack">
+        <h3>Install on Windows</h3>
+        <ol class="steps">
+          <li>Download <b>HansSmartLocalNotes-Windows.zip</b>.</li>
+          <li>Right-click the zip → <b>Extract all</b>.</li>
+          <li>Run <b>hans_smart_local_notes.exe</b> from the extracted folder.</li>
+          <li>Keep the whole folder together — the exe needs its data files.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <span>Hans Smart Local Notes · Version 1.0.0</span>
+    <span>Built with Flutter &amp; Dart · SQLite · shared_preferences · JSON export</span>
+  </div>
+</footer>
+
+</body>
+</html>
